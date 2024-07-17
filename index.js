@@ -15,7 +15,36 @@ app.get('/', (req, res) => {
     res.render('index',{foo:'FOO'})
 })
 app.get('/generate',async(req,res)=>{
-    //will implement random employees creation later
+    console.log('inside gen')
+//clearing existing 10 employees
+await Employee.deleteMany({})
+
+
+
+    let randomNames=['akash','arun','athul','vinu','abhay']
+    let randomCities=['kochi','cherthala','alappuzha','aluva','edappally']
+    let randomLanguage=['malayalam','tamil','hindi','english','spanish']
+
+    const getRandom=(arr)=>{
+        let n = Math.floor(Math.random()*5)
+        return arr[n]
+    }
+
+    for(let i=1;i<=10;i++){
+        let newEmployee =await Employee.create({
+            name:getRandom(randomNames),
+        salary:Math.floor(Math.random()*25000),
+        language:getRandom(randomLanguage),
+        city:getRandom(randomCities),
+        isManager:Math.random()>.5?true:false
+        })
+        console.log(newEmployee)
+    
+
+    }
+    
+ 
+
     Employee.find().then((result)=>{
         res.send(result)
     }).catch((err)=>{
